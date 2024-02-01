@@ -8,7 +8,7 @@ The repository includes two CloudFormation templates:
 
 1. **bastion-bucket.yml**: Creates a secure S3 bucket for storing OpenVPN configuration file, ensuring the file is encrypted at rest and not publicly accessible. It needs to be created first as it is referenced by the other template.
 
-2. **bastion-VPC.yml**: Sets up a VPC with single public subnet, an internet GW and an EC2 instance with OpenVPN installed, connected to a specified VPN concentrator. The EC2 instance is accessible via AWS Session Manager.
+2. **bastion-VPC.yml**: Sets up a VPC with single public subnet, an internet GW and an EC2 instance with OpenVPN installed, connected to a specified VPN concentrator. The EC2 instance is accessible via AWS Session Manager. Instead of EC2 instance only launch template can be provisioned so that an empemeral instance can be spun up any time as per demand.
 
 ## Prerequisites
 
@@ -35,15 +35,18 @@ The repository includes two CloudFormation templates:
 2. Choose "Create stack" and select "With new resources (standard)".
 3. Upload the bastion-VPC.yml template file.
 4. Provide required parameters:
+   - choose if you want to deploy permanent EC2 instance or just launch template for the instance
    - AMI ID for the EC2 instance (default is the latest Amazon Linux 2 AMI).
    - CIDR block, instance type, and name of the OpenVPN config file uploaded into the bucket
    - The IP address of the VPN concentrator.
-5. Proceed with the stack creation.
-6. Once the stack is created, the EC2 instance will be set up with OpenVPN and accessible via AWS Session Manager.
+   - EBS type
+   - EBS size
+6. Proceed with the stack creation.
+7. Once the stack is created, the EC2 instance will be set up with OpenVPN and accessible via AWS Session Manager.
 
 ## Resources Created
 
-- An EC2 instance configured with OpenVPN.
+- An EC2 instance configured with OpenVPN or EC2 Launch Template
 - An IAM role and instance profile for the EC2 instance.
 - A VPC, public subnet, and security group.
 - An S3 bucket for storing the OpenVPN configuration files.
